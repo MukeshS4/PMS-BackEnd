@@ -1,0 +1,51 @@
+jwt:
+  secret: Agastin
+server:
+  port: 8080
+
+#Eureka Client Configuration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    ip-address: localhost
+
+#Spring Cloud Gateway Routing Configuration
+spring:
+  application:
+    name: pms-gateway
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+      - id: user
+        uri: lb://user-service/user
+        predicates:
+        - Path=/user/**
+      - id: PMS
+        uri: lb://pms-auth/PMS
+        predicates:
+        - Path=/PMS/**
+      globalcors:
+        corsConfiguration:
+          '[/**]':
+            allowedOrigins: "http://localhost:4200"
+            allowedHeaders: "*"
+            allowedMethods:
+            - GET
+            - POST
+            - OPTIONS
+        addToSimpleUrlHandlerMapping: true
+    
+#Cors Policy Configuration
+#spring.cloud.gateway.globalcors.add-to-simple-url-handler-mapping=true
+#spring.cloud.gateway.globalcors.cors-configurations.'[/**]'.allowed-origins=http://localhost:4200/**
+#spring.cloud.gateway.globalcors.cors-configurations.'[/**]'.allowed-methods=GET
+#spring.cloud.gateway.globalcors.cors-configurations.'[/**]'.allowed-headers=Access-Control-Allow-Origin,Content-type
