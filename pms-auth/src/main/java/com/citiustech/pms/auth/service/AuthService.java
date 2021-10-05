@@ -149,4 +149,16 @@ public class AuthService implements IAuthService {
 		}
 	}
 
+	@Override
+	public Object getAllPtients() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getAllBlockedPatients() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
