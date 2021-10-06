@@ -35,7 +35,9 @@ public class AuthController {
 	@RequestMapping(value = "/PMS/pmsLock/lockAccount", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> lockAccount(@RequestBody String username) {
+	public ResponseEntity<?> lockAccount(@RequestBody String username,@RequestBody int type) {
 		System.out.println("hit Lock");
+		System.out.println(username+" "+type);
 		return ResponseEntity.ok(authService.lockAccount(username));
 	}
 	
@@ -68,6 +70,18 @@ public class AuthController {
 	@ResponseBody
 	public ResponseEntity<?> getAllBlockedUsers() throws Exception {
 		return ResponseEntity.ok(authService.getAllBlockedUsers());
+	}
+	
+	@RequestMapping(value = "/PMS/pmsGet/getAllPatients", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<?> getAllPatients() throws Exception {
+		return ResponseEntity.ok(authService.getAllPatients());
+	}
+	
+	@RequestMapping(value = "/PMS/pmsGet/getAllBockedPatients", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<?> getAllBlockedPatients() throws Exception {
+		return ResponseEntity.ok(authService.getAllBlockedPatients());
 	}
 	
 	@RequestMapping(value = "/PMS/pmsDelete/deleteUser", method = RequestMethod.POST)

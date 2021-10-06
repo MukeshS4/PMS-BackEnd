@@ -138,9 +138,15 @@ public class PatientService {
 		return ptVisitRepo.findAllPatientVisits();
 	}
 	
-	public Object getAllPatients() {
-		return diagnosisRepo;
-		
+	public List<Patient> getAllPatient(){
+		List<Patient> patientList=new ArrayList<>();
+		patientRepository.findAll().iterator().forEachRemaining(patient->patientList.add(patient));
+		return patientList;
+	}
+	
+	public List<Demographies> getAllBlockedPatients(){
+		List<Demographies> blockPatientList=new ArrayList<>();
+		return blockPatientList;
 	}
 
 }

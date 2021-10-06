@@ -16,6 +16,4 @@ public interface PmsPatientProxy {
 	@GetMapping("/getAllBlockedPatients")
 	public List<Demographies> getAllBlockedPatients();
 	
-	
-
 }
