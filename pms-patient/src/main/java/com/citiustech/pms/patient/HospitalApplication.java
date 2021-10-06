@@ -1,4 +1,4 @@
-package com.citiustech.pms.auth;
+package com.citiustech.pms.patient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class PmsAuthorizationApplication {
+public class HospitalApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PmsAuthorizationApplication.class, args);
+		SpringApplication.run(HospitalApplication.class, args);
 	}
 
 }

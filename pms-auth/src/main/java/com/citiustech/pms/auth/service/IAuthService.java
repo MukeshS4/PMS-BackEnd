@@ -17,6 +17,8 @@ public interface IAuthService {
 	public Object deActivateAccount(String emailId);
 	public Object activateAccount(String emailId);
 	public Object getAllBlockedUsers();
+	public Object getAllPtients();
+	public Object getAllBlockedPatients();
 	public Object unLockAccount(String username);
 	public List<String> getUniqueEmployeeId();
 	public boolean forgotPassword(String username) throws UserNotFoundException;
