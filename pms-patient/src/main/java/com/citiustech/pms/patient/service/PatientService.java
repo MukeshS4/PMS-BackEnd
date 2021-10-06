@@ -15,7 +15,8 @@ import com.citiustech.pms.patient.entity.Patient;
 import com.citiustech.pms.patient.entity.PatientVisits;
 import com.citiustech.pms.patient.entity.Procedure;
 import com.citiustech.pms.patient.entity.VitalSigns;
-import com.citiustech.pms.patient.exception.IncorrectEmailAddressException;
+import com.citiustech.pms.patient.exception.DuplicateEmailFoundException;
+import com.citiustech.pms.patient.exception.FieldsNotEmptyException;
 import com.citiustech.pms.patient.model.PatientForm;
 import com.citiustech.pms.patient.model.PatientVisit;
 import com.citiustech.pms.patient.repository.DiagnosisRepository;
@@ -41,44 +42,51 @@ public class PatientService {
 	PatientVisitRepository ptVisitRepo;
 	@Autowired
 	ProcedureRepository psRepo;
-	public Patient savePatient(PatientForm patient) throws IncorrectEmailAddressException{
-		
+	public Patient savePatient(PatientForm patient) throws Exception {	
 		Patient pt = new Patient();
-		Demographies dmo  = new Demographies();
-		dmo.setTitle(patient.getDemographies().getTitle());
-		dmo.setAge(patient.getDemographies().getAge());
-		dmo.setContact_number(patient.getDemographies().getContactNumber());
-		dmo.setCountryCd(patient.getDemographies().getCountryCd());
-		dmo.setDate_of_birth(patient.getDemographies().getDateOfBirth());
-		dmo.setEmail(patient.getDemographies().getEmail());
-		dmo.setEthinicity(patient.getDemographies().getEthinicity());
-		dmo.setFirst_name(patient.getDemographies().getFirstName());
-		dmo.setGender(patient.getDemographies().getGender());
-		dmo.setHome_address(patient.getDemographies().getHomeAddress());
-		dmo.setLanguage(patient.getDemographies().getLanguage().toString());
-		dmo.setLast_name(patient.getDemographies().getLastName());
-		dmo.setRace(patient.getDemographies().getRace());
-		EmergencyContactDetails ecd = new EmergencyContactDetails();
-		ecd.setAddress(patient.getDemographies().getEmergencyContactDetails().getAddress());
-		ecd.setContact(patient.getDemographies().getEmergencyContactDetails().getContact());
-		ecd.setEmail_address(patient.getDemographies().getEmergencyContactDetails().getEmailAddress());
-		ecd.setE_first_name(patient.getDemographies().getEmergencyContactDetails().getFirstName());
-		ecd.setE_last_name(patient.getDemographies().getEmergencyContactDetails().getLastName());
-		ecd.setPatient_portal_access(patient.getDemographies().getEmergencyContactDetails().getPatientPortalAccess());
-		ecd.setRelationship(patient.getDemographies().getEmergencyContactDetails().getRelationship());
-		dmo.setEmergency_contact_details(ecd);
-		Allergies alr = new Allergies();
-		alr.setAllergies(patient.getAllergies().getAllergies());
-		alr.setAllergyid(patient.getAllergies().getAllergyid());
-		alr.setAllergyname(patient.getAllergies().getAllergyname());
-		alr.setAllergydescription(patient.getAllergies().getAllergydescription());
-		alr.setAllergyc(patient.getAllergies().getAllergyc());
-		alr.setIs_fatal(patient.getAllergies().getIsFatal());
-		alr.setType(patient.getAllergies().getType());
-		pt.setAllergies(alr);
-		pt.setDemographies(dmo);
-		patientRepository.save(pt);
+		if(patient!=null) {
+			//Patient pt = new Patient();
+			Demographies dmo  = new Demographies();
+			dmo.setAge(patient.getDemographies().getAge());
+			dmo.setContact_number(patient.getDemographies().getContactNumber());
+			dmo.setDate_of_birth(patient.getDemographies().getDateOfBirth());
+			//dmo.setEmail(patient.getDemographies().getEmail());
+			if(patient.getDemographies().getEmail()!=null) {
+				Patient duplicateEmailCheck=patientRepository.findEmail(patient.getDemographies().getEmail());
+				if(duplicateEmailCheck.equals(patient.getDemographies().getEmail())){
+					throw new DuplicateEmailFoundException("Duplicate Email ID is present in the records");
+				}
+				dmo.setEmail(patient.getDemographies().getEmail());
+			}
+			dmo.setEthinicity(patient.getDemographies().getEthinicity());
+			dmo.setFirst_name(patient.getDemographies().getFirstName());
+			dmo.setGender(patient.getDemographies().getGender());
+			dmo.setHome_address(patient.getDemographies().getHomeAddress());
+			dmo.setLanguage(patient.getDemographies().getLanguage().toString());
+			dmo.setLast_name(patient.getDemographies().getLastName());
+			dmo.setRace(patient.getDemographies().getRace());
+			EmergencyContactDetails ecd = new EmergencyContactDetails();
+			ecd.setAddress(patient.getDemographies().getEmergencyContactDetails().getAddress());
+			ecd.setContact(patient.getDemographies().getEmergencyContactDetails().getContact());
+			ecd.setEmail_address(patient.getDemographies().getEmergencyContactDetails().getEmailAddress());
+			ecd.setE_first_name(patient.getDemographies().getEmergencyContactDetails().getFirstName());
+			ecd.setE_last_name(patient.getDemographies().getEmergencyContactDetails().getLastName());
+			ecd.setPatient_portal_access(patient.getDemographies().getEmergencyContactDetails().getPatientPortalAccess());
+			ecd.setRelationship(patient.getDemographies().getEmergencyContactDetails().getRelationship());
+			dmo.setEmergency_contact_details(ecd);
+			Allergies alr = new Allergies();
+			alr.setIs_fatal(patient.getAllergies().getIsFatal());
+			alr.setType(patient.getAllergies().getType());
+			pt.setDemographies(dmo);
+			patientRepository.save(pt);
+			//return pt;
+			
+		}else {
+			throw new FieldsNotEmptyException("Fields should not be empty");
+			
+		}
 		return pt;
+		
 	}
 
 	public Patient getPatient(Integer id) {
@@ -148,5 +156,7 @@ public class PatientService {
 		List<Demographies> blockPatientList=new ArrayList<>();
 		return blockPatientList;
 	}
+
+
 
 }

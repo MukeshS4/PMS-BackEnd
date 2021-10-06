@@ -32,7 +32,7 @@ public class GatewayRequestFilter implements GlobalFilter, Ordered  {
 		ServerHttpRequest request = exchange.getRequest();
 		final String requestTokenHeader = request.getHeaders().getFirst("Authorization");//.getHeader("Authorization");
 
-		boolean tokenValid = false;
+		boolean tokenInvalid = false;
 		String jwtToken = null;
 		// JWT Token is in the form "Bearer token". Remove Bearer word and get
 		// only the Token
@@ -40,7 +40,7 @@ public class GatewayRequestFilter implements GlobalFilter, Ordered  {
 			if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 				jwtToken = requestTokenHeader.substring(7);
 				try {
-					tokenValid = jwtTokenUtil.isTokenExpired(jwtToken);
+					tokenInvalid = jwtTokenUtil.isTokenExpired(jwtToken);
 				} catch (IllegalArgumentException e) {
 					System.out.println("Unable to get JWT Token");
 				} catch (ExpiredJwtException e) {
@@ -51,9 +51,9 @@ public class GatewayRequestFilter implements GlobalFilter, Ordered  {
 			}
 		}
 		else
-			tokenValid=false;
+			tokenInvalid=false;
 		
-		if(!tokenValid)
+		if(tokenInvalid)
 		{
 			return this.onError(exchange, "Authorization header is invalid", HttpStatus.UNAUTHORIZED);
 		}

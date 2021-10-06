@@ -25,7 +25,7 @@ public class AuthController {
 	@Autowired
 	AuthService authService;
 
-//	@CrossOrigin(origins = "http://localhost:4200")
+	//@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(value = "/PMS/pmsPassword/changePassword", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> changePassword(@RequestBody ChangePassword passwordData) throws IdenticalPasswordException, PasswordMismatchException {
