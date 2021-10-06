@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.citiustech.pms.patient.entity.Demographies;
 import com.citiustech.pms.patient.entity.Patient;
+import com.citiustech.pms.patient.entity.PatientData;
 import com.citiustech.pms.patient.model.PatientForm;
 import com.citiustech.pms.patient.model.PatientVisit;
+import com.citiustech.pms.patient.service.PatientRegistrationService;
 import com.citiustech.pms.patient.service.PatientService;
 
 @RestController
@@ -26,6 +30,9 @@ public class PatientController {
 	@Autowired
 	PatientService patientService;
 
+	@Autowired
+	PatientRegistrationService patientRegistrationService;
+	
 	@RequestMapping(method = RequestMethod.POST, path = "/PMS/pmsDetails/patientDetails", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Patient createPatient(@RequestBody PatientForm patient) throws Exception {
@@ -61,5 +68,11 @@ public class PatientController {
 
 	}
 
+	@RequestMapping(value = "/PMS/pmsRegister/patientRegister", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> saveUser(@RequestBody PatientData registerData) throws Exception {
+		System.out.println("inside register"+ registerData);
+		return ResponseEntity.ok(patientRegistrationService.save(registerData));
+	}
 
 }
