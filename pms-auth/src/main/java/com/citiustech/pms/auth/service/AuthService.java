@@ -14,6 +14,7 @@ import com.citiustech.pms.auth.exception.IdenticalPasswordException;
 import com.citiustech.pms.auth.exception.PasswordMismatchException;
 import com.citiustech.pms.auth.exception.UserNotFoundException;
 import com.citiustech.pms.auth.model.ChangePassword;
+import com.citiustech.pms.auth.model.Demographies;
 import com.citiustech.pms.auth.model.LoginDao;
 import com.citiustech.pms.auth.model.UserDataDao;
 import com.citiustech.pms.auth.repository.LoginRepository;
@@ -21,7 +22,10 @@ import com.citiustech.pms.auth.repository.UserDataRepository;
 
 @Service
 public class AuthService implements IAuthService {
-	
+
+	@Autowired
+	PmsPatientProxy patientProxy;
+
 	@Autowired
 	private MailService notificationService;
 
@@ -35,15 +39,14 @@ public class AuthService implements IAuthService {
 	private PasswordEncoder bcryptEncoder;
 
 	@Override
-	public Object updatePassword(ChangePassword passwordData) throws IdenticalPasswordException, PasswordMismatchException {
+	public Object updatePassword(ChangePassword passwordData)
+			throws IdenticalPasswordException, PasswordMismatchException {
 		LoginDao user = loginRepo.findByUsername(passwordData.getUsername());
 		if (!bcryptEncoder.matches(passwordData.getOldPassword(), user.getPassword())) {
 			throw new PasswordMismatchException("Old Password doesn't match");
-		}
-		else if(bcryptEncoder.matches(passwordData.getNewPassword(), user.getPassword())) {
+		} else if (bcryptEncoder.matches(passwordData.getNewPassword(), user.getPassword())) {
 			throw new IdenticalPasswordException("New Password is the same as Old Password");
-		}
-		else {
+		} else {
 			user.setPassword(bcryptEncoder.encode(passwordData.getNewPassword()));
 			System.out.println("Password changed successfully");
 			return loginRepo.save(user);
@@ -138,7 +141,7 @@ public class AuthService implements IAuthService {
 	}
 
 	@Override
-	public boolean forgotPassword(String username) throws UserNotFoundException{
+	public boolean forgotPassword(String username) throws UserNotFoundException {
 		LoginDao loadUser = loginRepo.findByUsername(username);
 		if (loadUser == null) {
 			throw new UserNotFoundException("User not found with specified username");
@@ -150,15 +153,13 @@ public class AuthService implements IAuthService {
 	}
 
 	@Override
-	public Object getAllPtients() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Demographies> getAllPatients() {
+		return patientProxy.getAllPatients();
 	}
 
 	@Override
-	public Object getAllBlockedPatients() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Demographies> getAllBlockedPatients() {
+		return patientProxy.getAllBlockedPatients();
 	}
-
+	
 }

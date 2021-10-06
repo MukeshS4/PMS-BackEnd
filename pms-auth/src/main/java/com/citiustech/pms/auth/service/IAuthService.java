@@ -6,6 +6,7 @@ import com.citiustech.pms.auth.exception.IdenticalPasswordException;
 import com.citiustech.pms.auth.exception.PasswordMismatchException;
 import com.citiustech.pms.auth.exception.UserNotFoundException;
 import com.citiustech.pms.auth.model.ChangePassword;
+import com.citiustech.pms.auth.model.Demographies;
 import com.citiustech.pms.auth.model.UserDataDao;
 
 public interface IAuthService {
@@ -17,10 +18,10 @@ public interface IAuthService {
 	public Object deActivateAccount(String emailId);
 	public Object activateAccount(String emailId);
 	public Object getAllBlockedUsers();
-	public Object getAllPtients();
-	public Object getAllBlockedPatients();
 	public Object unLockAccount(String username);
 	public List<String> getUniqueEmployeeId();
 	public boolean forgotPassword(String username) throws UserNotFoundException;
+	List<Demographies> getAllPatients();
+	List<Demographies> getAllBlockedPatients();
 
 }

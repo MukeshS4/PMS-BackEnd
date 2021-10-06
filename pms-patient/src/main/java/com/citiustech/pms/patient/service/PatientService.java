@@ -137,5 +137,10 @@ public class PatientService {
 		// TODO Auto-generated method stub
 		return ptVisitRepo.findAllPatientVisits();
 	}
+	
+	public Object getAllPatients() {
+		return diagnosisRepo;
+		
+	}
 
 }
