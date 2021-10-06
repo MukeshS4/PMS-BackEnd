@@ -34,7 +34,6 @@ public class AuthController {
 	
 	@RequestMapping(value = "/PMS/pmsLock/lockAccount", method = RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<?> lockAccount(@RequestBody String username) {
 	public ResponseEntity<?> lockAccount(@RequestBody String username,@RequestBody int type) {
 		System.out.println("hit Lock");
 		System.out.println(username+" "+type);

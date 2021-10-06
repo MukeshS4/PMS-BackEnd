@@ -63,4 +63,10 @@ public class JwtAuthenticationController {
 		System.out.println("inside register"+ registerData);
 		return ResponseEntity.ok(userService.save(registerData));
 	}
+	
+//	@RequestMapping(value = "/PMS/pmsRegister/patientRegister", method = RequestMethod.POST)
+//	@ResponseBody
+//	public ResponseEntity<?> savePatient(@RequestBody PatientData registerPatientData) throws Exception {
+//		return ResponseEntity.ok(userService.save(registerPatientData));
+//	}
 }
