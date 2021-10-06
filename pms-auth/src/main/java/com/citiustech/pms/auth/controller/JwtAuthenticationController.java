@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.citiustech.pms.auth.config.JwtTokenUtil;
 import com.citiustech.pms.auth.model.JwtRequest;
+import com.citiustech.pms.auth.model.Login;
 import com.citiustech.pms.auth.model.LoginResponse;
 import com.citiustech.pms.auth.model.UserData;
 import com.citiustech.pms.auth.service.JwtUserService;
@@ -64,9 +66,10 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(userService.save(registerData));
 	}
 	
-//	@RequestMapping(value = "/PMS/pmsRegister/patientRegister", method = RequestMethod.POST)
-//	@ResponseBody
-//	public ResponseEntity<?> savePatient(@RequestBody PatientData registerPatientData) throws Exception {
-//		return ResponseEntity.ok(userService.save(registerPatientData));
-//	}
+	@RequestMapping(value = "/patientRegister", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> savePatient(@RequestParam ("username") String username, @RequestParam ("password") String password) throws Exception {
+		System.out.println("Hi Auth Proxy called "+username +" : "+password);
+		return ResponseEntity.ok(userService.savePatientLogin(username,password));
+	}
 }
