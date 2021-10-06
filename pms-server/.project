@@ -15,14 +15,13 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
-<<<<<<< HEAD
+    
 		<buildCommand>
 			<name>org.springframework.ide.eclipse.boot.validation.springbootbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
-=======
->>>>>>> 28ac5e30a60f3d2685049550d9e1ebce08f98c3f
+
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
