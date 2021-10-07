@@ -59,7 +59,29 @@ public class Demographies {
     private Long contactNumber;
     @JsonProperty("emergency_contact_details")
     private EmergencyContactDetails emergencyContactDetails;
-    @JsonIgnore
+    @JsonProperty("status")
+    private boolean status;
+    @JsonProperty("unlock")
+    private boolean unlock;
+    
+    @JsonProperty("status")
+    public boolean isStatus() {
+		return status;
+	}
+    @JsonProperty("status")
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+    @JsonProperty("unlock")
+	public boolean isUnlock() {
+		return unlock;
+	}
+    @JsonProperty("unlock")
+	public void setUnlock(boolean unlock) {
+		this.unlock = unlock;
+	}
+
+	@JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("title")

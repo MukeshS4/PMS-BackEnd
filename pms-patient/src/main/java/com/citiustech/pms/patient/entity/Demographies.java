@@ -49,7 +49,20 @@ public class Demographies{
     private long country_code;
 	@Column(name = "contact_number")
     private long contact_number;
-	
+	private boolean status=true;
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	public boolean isUnlock() {
+		return unlock;
+	}
+	public void setUnlock(boolean unlock) {
+		this.unlock = unlock;
+	}
+	private boolean unlock=true;
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "emergency_contact_details_id", referencedColumnName = "id")
     private EmergencyContactDetails emergency_contact_details;
