@@ -41,9 +41,11 @@ public class UserDataController {
 //	}
 	
 	@GetMapping("/staff/{emailId}")
-	public UserData getStaff(@PathVariable String employeeId) {
-		return userDataService.getUserDataByEmployeeId(employeeId);
+	public UserData getStaff(@PathVariable String emailId) {
+		return userDataService.getUserDataByEmailId(emailId);
 	}
+	
+	
 	
 //	@PutMapping("/staff")
 //	public String updateStaff(@RequestBody UserData userData) {

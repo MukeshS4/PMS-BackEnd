@@ -3,7 +3,7 @@ package com.pms.user.constant;
 public enum AppointmentStatus {
 
 	SCHEDULED(0),
-	CANCELLED(-1),
+	CANCELLED(2),
 	COMPLETED(1);
 	
 	private int status;
