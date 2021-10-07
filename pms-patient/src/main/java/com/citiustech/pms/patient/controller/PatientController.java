@@ -29,9 +29,6 @@ import com.citiustech.pms.patient.service.PmsAuthProxy;
 public class PatientController {
 	
 	@Autowired
-	private PmsAuthProxy pmsAuthProxy;
-
-	@Autowired
 	PatientService patientService;
 
 	@Autowired
@@ -75,8 +72,8 @@ public class PatientController {
 	@RequestMapping(value = "/PMS/pmsRegister/patientRegister", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> saveUser(@RequestBody PatientData registerData) throws Exception {
+		System.out.println("hi");
 		System.out.println("inside register"+ registerData);
-		pmsAuthProxy.savePatient(registerData.getEmailId(), registerData.getPassword());
 		return ResponseEntity.ok(patientRegistrationService.save(registerData));
 	}
 

@@ -1,9 +1,7 @@
 package com.citiustech.pms.patient.service;
 
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +19,6 @@ public class PatientRegistrationService {
 	private MailService notificationService;
 
 	@Autowired
-	private PasswordEncoder bcryptEncoder;
-
-	@Autowired
 	private PatientDataRepository patientRegistrationRepo;
 	
 	
@@ -39,8 +34,8 @@ public class PatientRegistrationService {
 			newRegister.setDateOfBirth(registerData.getDateOfBirth());
 			newRegister.setCountry(registerData.getCountry());
 			newRegister.setContactNumber(registerData.getContactNumber());
-			newRegister.setPassword(bcryptEncoder.encode(registerData.getPassword()));
-			newRegister.setConfirmPassword(bcryptEncoder.encode(registerData.getConfirmPassword()));
+			newRegister.setPassword((registerData.getPassword()));
+			newRegister.setConfirmPassword((registerData.getConfirmPassword()));
 			loginPatientData(registerData.getEmailId(),registerData.getPassword());
 			boolean email = emailNotification(registerData.getEmailId());
 			System.out.println(email);
@@ -62,6 +57,7 @@ public class PatientRegistrationService {
 	public Object loginPatientData(String username,String password) {
 		System.out.println("test 1");
 		return pmsAuthProxy.savePatient(username, password);
+//		return null;
 	}
 	
 	public boolean emailNotification(String email) {
