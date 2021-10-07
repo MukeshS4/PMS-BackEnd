@@ -27,7 +27,7 @@ public class UserDataService {
 	public List<UserData> getAllUserDataByRole(String role)
 	{
 		List<UserData> allUserData = getAllUserData();
-		allUserData.stream().filter(staff->staff.getRole().equals(role)).collect(Collectors.toList());
+		allUserData = allUserData.stream().filter(staff->staff.getRole().equals(role)).collect(Collectors.toList());
 		return allUserData;
 	}
 	
@@ -42,6 +42,12 @@ public class UserDataService {
 	public UserData getUserDataByEmployeeId(String employeeId) {
 		Optional<UserData> userData = null;
 		userData = userDataRepository.findById(employeeId);
+		return userData.orElse(null);
+	}
+	
+	public UserData getUserDataByEmailId(String emailId) {
+		Optional<UserData> userData = null;
+		userData = userDataRepository.findByEmailId(emailId);
 		return userData.orElse(null);
 	}
 	
