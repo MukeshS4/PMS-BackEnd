@@ -68,6 +68,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			            "/swagger-resource",
 			            "/v2/api-docs",
 			            "/swagger-resources/**"
+			            "/swagger-resources/**",
+			            "/patientRegister",
+			            "/PMS/pmsRegister/patientRegister"
 //			            "/PMS/pmsGet/getAllUsers"
 //			            "/PMS/pmsLock/lockAccount",
 //			            "/PMS/pmsDelete/deleteUser",

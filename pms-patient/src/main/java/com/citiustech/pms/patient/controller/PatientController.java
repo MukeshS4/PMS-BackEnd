@@ -22,11 +22,12 @@ import com.citiustech.pms.patient.model.PatientForm;
 import com.citiustech.pms.patient.model.PatientVisit;
 import com.citiustech.pms.patient.service.PatientRegistrationService;
 import com.citiustech.pms.patient.service.PatientService;
+import com.citiustech.pms.patient.service.PmsAuthProxy;
 
 @RestController
 @CrossOrigin(origins = "*")
 public class PatientController {
-
+	
 	@Autowired
 	PatientService patientService;
 
@@ -71,6 +72,7 @@ public class PatientController {
 	@RequestMapping(value = "/PMS/pmsRegister/patientRegister", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> saveUser(@RequestBody PatientData registerData) throws Exception {
+		System.out.println("hi");
 		System.out.println("inside register"+ registerData);
 		return ResponseEntity.ok(patientRegistrationService.save(registerData));
 	}

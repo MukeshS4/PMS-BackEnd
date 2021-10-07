@@ -15,7 +15,6 @@ import com.citiustech.pms.auth.exception.AdminException;
 import com.citiustech.pms.auth.exception.IncorrectEmailAddressException;
 import com.citiustech.pms.auth.exception.UserAlreadyExistException;
 import com.citiustech.pms.auth.exception.UserLockedException;
-import com.citiustech.pms.auth.model.Login;
 import com.citiustech.pms.auth.model.LoginDao;
 import com.citiustech.pms.auth.model.LoginResponse;
 import com.citiustech.pms.auth.model.UserData;

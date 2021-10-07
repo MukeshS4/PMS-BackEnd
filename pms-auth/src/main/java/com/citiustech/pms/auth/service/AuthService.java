@@ -24,16 +24,16 @@ import com.citiustech.pms.auth.repository.UserDataRepository;
 public class AuthService implements IAuthService {
 
 	@Autowired
-	PmsPatientProxy patientProxy;
+	private PmsPatientProxy patientProxy;
 
 	@Autowired
 	private MailService notificationService;
 
 	@Autowired
-	LoginRepository loginRepo;
+	private LoginRepository loginRepo;
 
 	@Autowired
-	UserDataRepository userDataRepo;
+	private UserDataRepository userDataRepo;
 
 	@Autowired
 	private PasswordEncoder bcryptEncoder;
