@@ -217,9 +217,14 @@ public class AppointmentService {
 		}
 		else
 		{
-			appointmentStats=appointmentRepository.findAppointmentStatsByEmployee_Named(userDataService.getUserDataByEmployeeId(empId));
+			appointmentStats=appointmentRepository.findAppointmentStatsByEmployee_Named(userDataService.getUserDataByEmailId(empId));
 		}
 		statsMap=appointmentStats.stream().collect(Collectors.toMap(AppointmentStats::getStatus, AppointmentStats::getAppointmentCount));
+
+		statsMap.putIfAbsent(AppointmentStatus.SCHEDULED.getStatus(), 0l);
+		statsMap.putIfAbsent(AppointmentStatus.CANCELLED.getStatus(), 0l);
+		statsMap.putIfAbsent(AppointmentStatus.COMPLETED.getStatus(), 0l);
+		
 		stats.add(statsMap.values().stream().reduce(0l, Long::sum));
 		stats.add(statsMap.get(AppointmentStatus.SCHEDULED.getStatus()));
 		stats.add(statsMap.get(AppointmentStatus.CANCELLED.getStatus()));

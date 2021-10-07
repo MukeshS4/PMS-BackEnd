@@ -104,7 +104,6 @@ public class JwtUserService implements UserDetailsService, IJwtUserService {
 	}
 
 	@Override
-	public LoginDao saveLoginDetails(UserData registerData) {
 	public LoginDao saveLoginDetails(UserData registerData ) {
 		LoginDao newLogin = new LoginDao();
 		newLogin.setUsername(registerData.getEmailId());

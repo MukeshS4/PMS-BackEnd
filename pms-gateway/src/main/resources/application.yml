@@ -26,13 +26,17 @@ spring:
           lower-case-service-id: true
       routes:
       - id: user
-        uri: lb://user-service/user
+        uri: lb://pms-user/user
         predicates:
         - Path=/user/**
       - id: PMS
         uri: lb://pms-auth/PMS
         predicates:
         - Path=/PMS/**
+      - id: patient
+        uri: lb://pms-patient/patient
+        predicates:
+        - Path=/patient/**
       globalcors:
         corsConfiguration:
           '[/**]':
@@ -41,6 +45,8 @@ spring:
             allowedMethods:
             - GET
             - POST
+            - DELETE
+            - PUT
             - OPTIONS
         addToSimpleUrlHandlerMapping: true
     
