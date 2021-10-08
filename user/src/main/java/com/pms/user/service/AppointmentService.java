@@ -7,7 +7,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -17,10 +19,12 @@ import org.springframework.stereotype.Service;
 import com.pms.user.constant.AppointmentStatus;
 import com.pms.user.constant.TimeSlot;
 import com.pms.user.dto.AppointmentDTO;
+import com.pms.user.dto.AppointmentStats;
 import com.pms.user.dto.EmailDTO;
 import com.pms.user.dto.MessageDTO;
 import com.pms.user.entity.Appointment;
 import com.pms.user.entity.AppointmentEventAudit;
+import com.pms.user.entity.UserData;
 import com.pms.user.exception.AppointmentNotExistException;
 import com.pms.user.repository.AppointmentRepository;
 
@@ -31,11 +35,13 @@ public class AppointmentService {
 	private AppointmentRepository appointmentRepository;
 	
 	@Autowired
-	private AppointmentEventAuditService appointmentEventAuditService;
-	
+	private AppointmentEventAuditService appointmentEventAuditService;	
 	
 	@Autowired
 	private NotificationClient notificationClient;
+	
+	@Autowired
+	private UserDataService userDataService;
 	
 	private final String CREATED_BY="N01";
 	
@@ -185,19 +191,45 @@ public class AppointmentService {
 		return saveFlag;
 	}
 	
-	public List<String> getAllAvailableSlot(String date){
+	public List<String> getAllAvailableSlot(String date,String empId){
 		List<String> timeSlot = new ArrayList<>();
 		try {
+			UserData userData=userDataService.getUserDataByEmployeeId(empId);
 			Arrays.asList(TimeSlot.values()).stream().forEach(slot->timeSlot.add(slot.getTimeSlot()));
 			DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			LocalDate localDate=LocalDate.parse(date,df);
-			List<String> bookedSlot=appointmentRepository.getBookedSlotByDateAndStatus(localDate,AppointmentStatus.CANCELLED.getStatus());
+			List<String> bookedSlot=appointmentRepository.getBookedSlotByDateAndStatusAndEmployee(localDate,AppointmentStatus.CANCELLED.getStatus(),userData);
 			timeSlot.removeAll(bookedSlot);
 		} catch (DateTimeParseException | IllegalArgumentException e) {
 			System.out.println("Exception while checking for time slot"+e.getMessage());
 			e.printStackTrace();
 		}
 		return timeSlot;
+	}
+	
+	public List<Long> getAppointmentStats(String empId){
+		List<Long> stats=new ArrayList<>();
+		List<AppointmentStats> appointmentStats=new ArrayList<>();
+		Map<Integer,Long> statsMap=new HashMap<>();
+		if(empId==null)
+		{
+			appointmentStats=appointmentRepository.findAppointmentStats_Named();			
+		}
+		else
+		{
+			appointmentStats=appointmentRepository.findAppointmentStatsByEmployee_Named(userDataService.getUserDataByEmailId(empId));
+		}
+		statsMap=appointmentStats.stream().collect(Collectors.toMap(AppointmentStats::getStatus, AppointmentStats::getAppointmentCount));
+
+		statsMap.putIfAbsent(AppointmentStatus.SCHEDULED.getStatus(), 0l);
+		statsMap.putIfAbsent(AppointmentStatus.CANCELLED.getStatus(), 0l);
+		statsMap.putIfAbsent(AppointmentStatus.COMPLETED.getStatus(), 0l);
+		
+		stats.add(statsMap.values().stream().reduce(0l, Long::sum));
+		stats.add(statsMap.get(AppointmentStatus.SCHEDULED.getStatus()));
+		stats.add(statsMap.get(AppointmentStatus.CANCELLED.getStatus()));
+		stats.add(statsMap.get(AppointmentStatus.COMPLETED.getStatus()));
+		return stats;
 	}
 
 }

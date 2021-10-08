@@ -1,5 +1,6 @@
 package com.pms.user.controller;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -59,8 +60,13 @@ public class AppointmentController {
 	}
 	
 	@GetMapping("/appointment/slot")
-	public List<String> getAllAvailableSlot(@RequestParam String date){
-		return appointmentService.getAllAvailableSlot(date);
+	public List<String> getAllAvailableSlot(@RequestParam String date,@RequestParam String empId){
+		return appointmentService.getAllAvailableSlot(date,empId);
+	}
+	
+	@GetMapping("/appointment/stats")
+	public List<Long> getAppointmentStats(@RequestParam(required=false) String empId){
+		return appointmentService.getAppointmentStats(empId);
 	}
 
 }
